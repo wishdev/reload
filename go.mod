@@ -1,4 +1,4 @@
-module github.com/teamwork/reload
+module github.com/wishdev/reload
 
 go 1.13
 
