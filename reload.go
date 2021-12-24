@@ -43,6 +43,8 @@ var (
 	// The watcher won't be closed automatically, and the file descriptor will be
 	// leaked if we don't close it in Exec(); see #9.
 	closeWatcher func() error
+
+	RestartExec func()
 )
 
 type dir struct {
@@ -128,7 +130,7 @@ func Do(log func(string, ...interface{}), additional ...dir) error {
 				if event.Name == binSelf {
 					// Wait for writes to finish.
 					time.Sleep(100 * time.Millisecond)
-					Exec()
+					RestartExec()
 				}
 
 				for _, a := range additional {
@@ -208,4 +210,8 @@ func relpath(p string) string {
 	}
 
 	return p
+}
+
+func init() {
+	RestartExec = Exec
 }
